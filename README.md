@@ -3,11 +3,11 @@
 This project implements a simple CRUD (Create, Read, Update, Delete) API for managing movies using Go. It uses the Gorilla Mux router for handling HTTP routes and serves JSON responses to interact with the movie data.
 
 ## Project Structure
-
-. ├── go-movies-crud # Compiled binary of the server ├── main.go # Go source code for the Movies CRUD API ├── go.mod # Module file to track dependencies └── go.sum # Dependency checksum file
-
-markdown
-Copiar código
+    . 
+    ├── go-movies-crud          # Compiled binary of the server 
+    ├── main.go                 # Go source code for the Movies CRUD API 
+    ├── go.mod                  # Module file to track dependencies 
+    └── go.sum                  # Dependency checksum file
 
 ## Requirements
 
@@ -21,137 +21,137 @@ To run this project, you need the following:
 
 1. **Clone the project files** into a directory on your machine.
 2. **Navigate to the project directory** in your terminal:
-   ```bash
-   cd /path/to/project
 
-Install dependencies: Run the following command to install the required dependencies:
-bash:
-
+```bash
+cd /path/to/project
+```
+**Install dependencies**: Run the following command to install the required dependencies:
+```bash
 go mod tidy
-
-Run the server: To run the Go server directly from the source code:
-bash:
-
+```
+**Run the server**: To run the Go server directly from the source code:
+```bash
 go run main.go
-
-Alternatively, to compile the binary:
-bash:
-
+```
+**Alternatively, to compile the binary**:
+```bash
 go build -o go-movies-crud
 ./go-movies-crud
+```
 
-Access the API: The server will start at port 3000. You can interact with the API using HTTP requests to http://localhost:3000.
+**Access the API**: The server will start at port ``3000``. You can interact with the API using HTTP requests to ``http://localhost:3000``.
 
 ### Option 2: Run the Compiled Binary
-If you already have the go-movies-crud binary:
+If you already have the ``go-movies-crud`` binary:
 
-Open a terminal and navigate to the directory containing go-movies-crud.
-Run the binary:
-bash:
-
+- Open a terminal and navigate to the directory containing go-movies-crud.
+- Run the binary:
+```bash
 ./go-movies-crud
-
-API Endpoints
+```
+## API Endpoints
 The following are the available API endpoints for managing movies:
 
-1. Get All Movies
+### 1. Get All Movies
 
-Endpoint: /movies
+**Endpoint**: ``/movies``
 
-Method: GET
-Description: Returns a list of all movies.
-Example:
-bash:
+**Method**: GET
 
+**Description**: Returns a list of all movies.
+
+**Example**:
+```bash
 curl http://localhost:3000/movies
+```
+### 2. Get Movie by ID
 
-2. Get Movie by ID
+**Endpoint**: ``/movies/{id}``
 
-Endpoint: /movies/{id}
+**Method**: GET
 
-Method: GET
-Description: Returns a single movie based on the movie ID.
-Example:
-bash:
+**Description**: Returns a single movie based on the movie ID.
 
+**Example**:
+```bash
 curl http://localhost:3000/movies/1
+```
+### 3. Create a New Movie
 
-3. Create a New Movie
+**Endpoint**: ``/movies``
 
-Endpoint: /movies
+**Method**: POST
 
-Method: POST
-Description: Creates a new movie by sending JSON data in the request body.
-Example:
-bash:
+**Description**: Creates a new movie by sending JSON data in the request body.
 
+**Example**:
+```bash
 curl -X POST http://localhost:3000/movies \
   -H "Content-Type: application/json" \
   -d '{"isbn":"987654", "title":"New Movie", "director":{"firstname":"John", "lastname":"Doe"}}'
+```
+### 4. Update an Existing Movie
 
-4. Update an Existing Movie
+**Endpoint**: ``/movies/{id}``
 
-Endpoint: /movies/{id}
+**Method**: PUT
 
-Method: PUT
-Description: Updates a movie based on its ID by sending JSON data in the request body.
-Example:
-bash:
+**Description**: Updates a movie based on its ID by sending JSON data in the request body.
 
+**Example**:
+```bash
 curl -X PUT http://localhost:3000/movies/1 \
   -H "Content-Type: application/json" \
   -d '{"isbn":"987654", "title":"Updated Movie", "director":{"firstname":"Jane", "lastname":"Doe"}}'
+```
+### 5. Delete a Movie
 
-5. Delete a Movie
+**Endpoint**: ``/movies/{id}``
 
-Endpoint: /movies/{id}
+**Method**: DELETE
 
-Method: DELETE
-Description: Deletes a movie based on its ID.
-Example:
-bash:
+**Description**: Deletes a movie based on its ID.
 
+**Example**:
+```bash
 curl -X DELETE http://localhost:3000/movies/1
-
+```
 ## Project Overview
 This project includes the following core functionalities:
 
-CRUD operations for movies: The server allows creating, reading, updating, and deleting movies through JSON API requests.
+- **CRUD operations for movies**: The server allows creating, reading, updating, and deleting movies through JSON API requests.
 
-Gorilla Mux for routing: The Gorilla Mux package is used to handle the API routes.
-In-memory data store: The movies are stored in an in-memory slice, which is cleared when the server stops.
-main.go
-The main.go file contains all of the server logic, including routing, data handling, and CRUD operations.
+- **Gorilla Mux for routing**: The Gorilla Mux package is used to handle the API routes.
+- **In-memory data store**: The movies are stored in an in-memory slice, which is cleared when the server stops.
 
-Movie struct: Represents a movie with fields for ID, ISBN, Title, and Director.
-go:
+### main.go
+The ``main.go`` file contains all of the server logic, including routing, data handling, and CRUD operations.
 
+- **Movie struct**: Represents a movie with fields for ID, ISBN, Title, and Director.
+```go
 type Movie struct {
     ID       string    `json:"id"`
     Isbn     string    `json:"isbn"`
     Title    string    `json:"title"`
     Director *Director `json:"director"`
 }
-
-Director struct: Represents the director of the movie with fields for first and last name.
-go:
-
+```
+- **Director struct**: Represents the director of the movie with fields for first and last name.
+```go
 type Director struct {
     Firstname string `json:"firstname"`
     Lastname  string `json:"lastname"`
 }
-
-getMovies: Handles GET requests to return all movies.
-go:
-
+```
+- **getMovies**: Handles GET requests to return all movies.
+```go
 func getMovies(w http.ResponseWriter, r *http.Request) {
     w.Header().Set("Content-Type", "application/json")
     json.NewEncoder(w).Encode(movies)
 }
-
-getMovie: Handles GET requests for retrieving a single movie by its ID.
-go:
-
+```
+- **getMovie**: Handles GET requests for retrieving a single movie by its ID.
+```go
 func getMovie(w http.ResponseWriter, r *http.Request) {
     w.Header().Set("Content-type", "application/json")
     params := mux.Vars(r)
@@ -162,10 +162,9 @@ func getMovie(w http.ResponseWriter, r *http.Request) {
         }
     }
 }
-
-createMovie: Handles POST requests to create a new movie. A random ID is generated for each new movie.
-go:
-
+```
+- **createMovie**: Handles POST requests to create a new movie. A random ID is generated for each new movie.
+```go
 func createMovie(w http.ResponseWriter, r *http.Request) {
     w.Header().Set("Content-type", "application/json")
     var movie Movie
@@ -174,10 +173,9 @@ func createMovie(w http.ResponseWriter, r *http.Request) {
     movies = append(movies, movie)
     json.NewEncoder(w).Encode(movie)
 }
-
-updateMovie: Handles PUT requests to update an existing movie based on its ID.
-go:
-
+```
+- **updateMovie**: Handles PUT requests to update an existing movie based on its ID.
+```go
 func updateMovie(w http.ResponseWriter, r *http.Request) {
     w.Header().Set("Content-type", "application/json")
     params := mux.Vars(r)
@@ -193,10 +191,9 @@ func updateMovie(w http.ResponseWriter, r *http.Request) {
         }
     }
 }
-
-deleteMovie: Handles DELETE requests to delete a movie by its ID.
-go:
-
+```
+- **deleteMovie**: Handles DELETE requests to delete a movie by its ID.
+```go
 func deleteMovie(w http.ResponseWriter, r *http.Request) {
     w.Header().Set("Content-Type", "application/json")
     params := mux.Vars(r)
@@ -208,30 +205,29 @@ func deleteMovie(w http.ResponseWriter, r *http.Request) {
     }
     json.NewEncoder(w).Encode(movies)
 }
-
-Routing: The mux.Router is used to handle all the routes for the API.
-go:
-
+```
+- **Routing**: The ``mux.Router`` is used to handle all the routes for the API.
+```go
 r := mux.NewRouter()
 r.HandleFunc("/movies", getMovies).Methods("GET")
 r.HandleFunc("/movies/{id}", getMovie).Methods("GET")
 r.HandleFunc("/movies", createMovie).Methods("POST")
 r.HandleFunc("/movies/{id}", updateMovie).Methods("PUT")
 r.HandleFunc("/movies/{id}", deleteMovie).Methods("DELETE")
-
-### Starting the server: The server listens on port 3000 and logs any fatal errors.
-go:
-
+```
+- **Starting the server**: The server listens on port ``3000`` and logs any fatal errors.
+```go
 fmt.Printf("Starting server at port 3000\n")
 log.Fatal(http.ListenAndServe(":3000", r))
-Extending the Project
+```
+## Extending the Project
 You can extend this project by:
 
-Adding validation to the movie data before saving it.
-Persisting the movies in a database instead of using an in-memory slice.
-Adding more endpoints for advanced querying or searching movies.
-Conclusion
+- Adding validation to the movie data before saving it.
+
+- Persisting the movies in a database instead of using an in-memory slice.
+
+- Adding more endpoints for advanced querying or searching movies.
+## Conclusion
 This project provides a basic CRUD API for managing movies using Go. It demonstrates how to handle routes, perform CRUD operations, and work with JSON data.
 
-
-This `README.md` provides all necessary instructions and documentation for your project, making it easy for others to understand, run, and extend the application. Let me know if you need further changes or additions!
